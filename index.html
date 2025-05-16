@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>🎉 Last Day of School Countdown 🎉</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -17,19 +17,26 @@
       color: #222;
       text-align: center;
     }
-
     h1 {
       font-size: 3rem;
       margin-bottom: 20px;
+      background-color: #1e66f5;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
     }
-
     #countdown {
       font-size: 2.5rem;
       margin: 20px 0;
+      background-color: #1e66f5;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      display: inline-block;
+      min-width: 250px;
     }
-
     button {
-      background-color: #007bff;
+      background-color: #1e66f5;
       color: white;
       border: none;
       padding: 15px 30px;
@@ -38,12 +45,11 @@
       border-radius: 8px;
       margin: 10px;
       transition: 0.3s;
+      min-width: 220px;
     }
-
     button:hover {
       background-color: #0056b3;
     }
-
     audio {
       display: none;
     }
@@ -60,16 +66,17 @@
   <audio id="music" src="paris.mp3" loop></audio>
 
   <script>
-    // Countdown
+    // Countdown function
     const countdownEl = document.getElementById("countdown");
     const targetDate = new Date("June 11, 2025 00:00:00").getTime();
 
     function updateCountdown() {
-      const now = new Date().getTime();
+      const now = Date.now();
       const diff = targetDate - now;
 
       if (diff <= 0) {
-        countdownEl.innerHTML = "🎉 It's Party Time! 🎉";
+        countdownEl.textContent = "🎉 It's Party Time! 🎉";
+        clearInterval(countdownInterval);
         return;
       }
 
@@ -78,13 +85,14 @@
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
-    setInterval(updateCountdown, 1000);
+    // Start countdown interval
     updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
 
-    // Music
+    // Play Music button logic
     const music = document.getElementById("music");
     const playBtn = document.getElementById("playMusic");
 
@@ -98,7 +106,7 @@
       }
     });
 
-    // Go Crazy Mode
+    // Crazy mode opens 20 windows with countdown and autoplay music
     const crazyBtn = document.getElementById("crazyMode");
 
     crazyBtn.addEventListener("click", () => {
@@ -107,52 +115,76 @@
 
         if (win) {
           win.document.write(`
-            <html>
-              <head>
-                <title>Countdown</title>
-                <style>
-                  body {
-                    font-family: sans-serif;
-                    background: linear-gradient(135deg, #74ebd5, #acb6e5);
-                    color: #222;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100vh;
-                    margin: 0;
-                    text-align: center;
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1" />
+              <title>Countdown</title>
+              <style>
+                body {
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  background: linear-gradient(135deg, #74ebd5, #acb6e5);
+                  color: #222;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  height: 100vh;
+                  margin: 0;
+                  text-align: center;
+                }
+                h1 {
+                  font-size: 2rem;
+                  background-color: #1e66f5;
+                  color: white;
+                  padding: 10px 20px;
+                  border-radius: 6px;
+                  margin-bottom: 20px;
+                }
+                #countdown {
+                  font-size: 1.5rem;
+                  background-color: #1e66f5;
+                  color: white;
+                  padding: 10px 15px;
+                  border-radius: 6px;
+                  min-width: 180px;
+                }
+              </style>
+            </head>
+            <body>
+              <h1>🎉 Countdown to June 11 🎉</h1>
+              <div id="countdown">Loading...</div>
+              <audio autoplay loop src="paris.mp3"></audio>
+              <script>
+                const countdownEl = document.getElementById('countdown');
+                const targetDate = new Date('June 11, 2025 00:00:00').getTime();
+
+                function updateCountdown() {
+                  const now = Date.now();
+                  const diff = targetDate - now;
+
+                  if (diff <= 0) {
+                    countdownEl.textContent = "🎉 It's Party Time!";
+                    clearInterval(interval);
+                    return;
                   }
-                  h1 { font-size: 2rem; }
-                  #countdown { font-size: 1.5rem; margin-top: 10px; }
-                </style>
-              </head>
-              <body>
-                <h1>🎉 Countdown to June 11 🎉</h1>
-                <div id="countdown">Loading...</div>
-                <audio autoplay loop src="paris.mp3"></audio>
-                <script>
-                  const countdownEl = document.getElementById("countdown");
-                  const targetDate = new Date("June 11, 2025 00:00:00").getTime();
-                  function updateCountdown() {
-                    const now = new Date().getTime();
-                    const diff = targetDate - now;
-                    if (diff <= 0) {
-                      countdownEl.innerHTML = "🎉 It's Party Time!";
-                      return;
-                    }
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                    countdownEl.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-                  }
-                  setInterval(updateCountdown, 1000);
-                  updateCountdown();
-                </script>
-              </body>
+
+                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                  countdownEl.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                }
+
+                updateCountdown();
+                const interval = setInterval(updateCountdown, 1000);
+              <\/script>
+            </body>
             </html>
           `);
+          win.document.close();
         }
       }
     });
