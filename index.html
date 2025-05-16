@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎉 Last Day of School Countdown Party 🎉</title>
+  <title>🎉 Last Day of School Countdown 🎉</title>
   <style>
     body {
       margin: 0;
@@ -13,39 +13,35 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-image: url('https://media.giphy.com/media/3o7qE2VAxuXWeyvJIY/giphy.gif');
-      background-size: cover;
-      background-position: center;
-      color: white;
+      background: linear-gradient(135deg, #74ebd5, #acb6e5);
+      color: #222;
       text-align: center;
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 20px;
-      text-shadow: 2px 2px 10px #000;
     }
 
     #countdown {
       font-size: 2.5rem;
       margin: 20px 0;
-      text-shadow: 1px 1px 5px #000;
     }
 
-    #playMusic {
-      background-color: #ff4081;
+    button {
+      background-color: #007bff;
       color: white;
       border: none;
       padding: 15px 30px;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      border-radius: 10px;
+      border-radius: 8px;
+      margin: 10px;
       transition: 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
-    #playMusic:hover {
-      background-color: #e91e63;
+    button:hover {
+      background-color: #0056b3;
     }
 
     audio {
@@ -57,11 +53,14 @@
 
   <h1>🎉 Countdown to the Last Day of School 🎉</h1>
   <div id="countdown"></div>
+
   <button id="playMusic">▶️ Play Music</button>
+  <button id="crazyMode">🚀 Go Crazy Mode</button>
+
   <audio id="music" src="paris.mp3"></audio>
 
   <script>
-    // Countdown Logic
+    // Countdown Timer
     const countdownEl = document.getElementById("countdown");
     const targetDate = new Date("June 11, 2025 00:00:00").getTime();
 
@@ -85,17 +84,76 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Music Playback
+    // Play / Pause Music
     const music = document.getElementById("music");
-    const button = document.getElementById("playMusic");
+    const playBtn = document.getElementById("playMusic");
 
-    button.addEventListener("click", () => {
+    playBtn.addEventListener("click", () => {
       if (music.paused) {
         music.play();
-        button.textContent = "⏸ Pause Music";
+        playBtn.textContent = "⏸ Pause Music";
       } else {
         music.pause();
-        button.textContent = "▶️ Play Music";
+        playBtn.textContent = "▶️ Play Music";
+      }
+    });
+
+    // Crazy Mode - Open 20 new windows with music & countdown
+    const crazyBtn = document.getElementById("crazyMode");
+
+    crazyBtn.addEventListener("click", () => {
+      for (let i = 0; i < 20; i++) {
+        const win = window.open("", "_blank", "width=400,height=300");
+
+        if (win) {
+          win.document.write(`
+            <html>
+              <head>
+                <title>🎉 Countdown</title>
+                <style>
+                  body {
+                    font-family: sans-serif;
+                    background: linear-gradient(135deg, #74ebd5, #acb6e5);
+                    color: #222;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                    margin: 0;
+                    text-align: center;
+                  }
+                  h1 { font-size: 2rem; }
+                  #countdown { font-size: 1.5rem; margin-top: 10px; }
+                </style>
+              </head>
+              <body>
+                <h1>🎉 Countdown to June 11 🎉</h1>
+                <div id="countdown">Loading...</div>
+                <audio autoplay loop src="paris.mp3"></audio>
+                <script>
+                  const countdownEl = document.getElementById("countdown");
+                  const targetDate = new Date("June 11, 2025 00:00:00").getTime();
+                  function updateCountdown() {
+                    const now = new Date().getTime();
+                    const diff = targetDate - now;
+                    if (diff <= 0) {
+                      countdownEl.innerHTML = "🎉 It's Party Time!";
+                      return;
+                    }
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                    const seconds = Math.floor((diff / 1000) % 60);
+                    countdownEl.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                  }
+                  setInterval(updateCountdown, 1000);
+                  updateCountdown();
+                </script>
+              </body>
+            </html>
+          `);
+        }
       }
     });
   </script>
