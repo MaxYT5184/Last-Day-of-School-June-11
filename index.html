@@ -52,15 +52,15 @@
 <body>
 
   <h1>🎉 Countdown to the Last Day of School 🎉</h1>
-  <div id="countdown"></div>
+  <div id="countdown">Loading...</div>
 
   <button id="playMusic">▶️ Play Music</button>
   <button id="crazyMode">🚀 Go Crazy Mode</button>
 
-  <audio id="music" src="paris.mp3"></audio>
+  <audio id="music" src="paris.mp3" loop></audio>
 
   <script>
-    // Countdown Timer
+    // Countdown
     const countdownEl = document.getElementById("countdown");
     const targetDate = new Date("June 11, 2025 00:00:00").getTime();
 
@@ -74,9 +74,9 @@
       }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
       countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
@@ -84,7 +84,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Play / Pause Music
+    // Music
     const music = document.getElementById("music");
     const playBtn = document.getElementById("playMusic");
 
@@ -98,7 +98,7 @@
       }
     });
 
-    // Crazy Mode - Open 20 new windows with music & countdown
+    // Go Crazy Mode
     const crazyBtn = document.getElementById("crazyMode");
 
     crazyBtn.addEventListener("click", () => {
@@ -109,7 +109,7 @@
           win.document.write(`
             <html>
               <head>
-                <title>🎉 Countdown</title>
+                <title>Countdown</title>
                 <style>
                   body {
                     font-family: sans-serif;
@@ -142,9 +142,9 @@
                       return;
                     }
                     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-                    const seconds = Math.floor((diff / 1000) % 60);
+                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                     countdownEl.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
                   }
                   setInterval(updateCountdown, 1000);
