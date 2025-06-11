@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HGT Rainer Rules Webhook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1a1a2e;
+            color: white;
+        }
+        #webhookForm {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #16213e;
+            border-radius: 10px;
+            width: 400px;
+        }
+        input, select {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0f3460;
+            color: white;
+            padding: 10px;
+            width: 100px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>HGT Rainer Rules Webhook System</h1>
+    <form id="webhookForm">
+        <input type="text" id="webhookURL" placeholder="Enter Webhook URL">
+        <input type="text" id="title" placeholder="Embed Title">
+        <input type="text" id="bodyText" placeholder="Embed Body Text">
+        <select id="embedColor">
+            <option value="34495E">Navy Blue</option>
+            <option value="FFFFFF">White</option>
+            <option value="3498DB">Blue</option>
+            <option value="87CEEB">Light Blue</option>
+        </select>
+        <button type="button" onclick="sendWebhook()">Send</button>
+    </form>
+
+    <script>
+        function sendWebhook() {
+            const webhookURL = document.getElementById("webhookURL").value;
+            const title = document.getElementById("title").value || "📜 HGT Rainer Community Rules";
+            const bodyText = document.getElementById("bodyText").value || 
+            "**1️⃣ Respect Everyone** – Treat others with kindness. No harassment, discrimination, or toxicity.\n" +
+            "**2️⃣ No Spamming or Self-Promotion** – Keep chats clean. Advertise only in designated channels.\n" +
+            "**3️⃣ Use Appropriate Channels** – Follow the category structure for discussions and promotions.\n" +
+            "**4️⃣ Keep Content Safe** – No NSFW, offensive, or harmful material.\n" +
+            "**5️⃣ Follow Discord’s Terms** – Adhere to Discord’s official guidelines and policies.";
+            const embedColor = document.getElementById("embedColor").value;
+            
+            const embedMessage = {
+                "content": "@everyone",
+                "embeds": [{
+                    "title": title,
+                    "description": bodyText,
+                    "color": parseInt(embedColor, 16),
+                    "image": {"url": "https://maxyt5184.github.io/Last-Day-of-School-June-11/Copilot_20250611_185300.png"},
+                    "footer": {
+                        "text": "🔗 Visit: HGT Rainer Community",
+                        "icon_url": "https://HGT-Promotion.defendaminecraft.online/favicon.ico"
+                    }
+                }]
+            };
+
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(embedMessage)
+            }).then(response => {
+                if (response.ok) {
+                    alert("Webhook sent successfully!");
+                } else {
+                    alert("Failed to send webhook. Check your URL.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
