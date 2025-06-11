@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HGT Rainer Rules Webhook</title>
+    <title>HGT Rainer Role Selection</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,62 +18,50 @@
             border-radius: 10px;
             width: 400px;
         }
-        input, select {
+        button {
             display: block;
             margin: 10px auto;
             padding: 10px;
-            width: 80%;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #0f3460;
-            color: white;
-            padding: 10px;
-            width: 100px;
-            border: none;
+            width: 200px;
             border-radius: 5px;
             cursor: pointer;
         }
+        .youtuber { background-color: #FF4500; color: white; }
+        .developer { background-color: #3498DB; color: white; }
+        .boy { background-color: #1E90FF; color: white; }
+        .girl { background-color: #FF69B4; color: white; }
     </style>
 </head>
 <body>
-    <h1>HGT Rainer Rules Webhook System</h1>
+    <h1>🎭 Select Your Role</h1>
+    <p>Welcome to **HGT Rainer Community!** Choose a role that best represents you and connect with like-minded members.</p>
+    <p>🔹 **📽️ Youtuber** – For content creators and video makers.<br>
+       🔹 **💻 Developer** – For programmers and tech enthusiasts.<br>
+       🔹 **👦 Boy** – Identify as male.<br>
+       🔹 **👧 Girl** – Identify as female.</p>
     <form id="webhookForm">
         <input type="text" id="webhookURL" placeholder="Enter Webhook URL">
-        <input type="text" id="title" placeholder="Embed Title">
-        <input type="text" id="bodyText" placeholder="Embed Body Text">
-        <select id="embedColor">
-            <option value="34495E">Navy Blue</option>
-            <option value="FFFFFF">White</option>
-            <option value="3498DB">Blue</option>
-            <option value="87CEEB">Light Blue</option>
-        </select>
-        <button type="button" onclick="sendWebhook()">Send</button>
+        <button class="youtuber" type="button" onclick="sendRole('📽️ Youtuber')">Youtuber</button>
+        <button class="developer" type="button" onclick="sendRole('💻 Developer')">Developer</button>
+        <button class="boy" type="button" onclick="sendRole('👦 Boy')">Boy</button>
+        <button class="girl" type="button" onclick="sendRole('👧 Girl')">Girl</button>
     </form>
 
     <script>
-        function sendWebhook() {
+        function sendRole(role) {
             const webhookURL = document.getElementById("webhookURL").value;
-            const title = document.getElementById("title").value || "📜 HGT Rainer Community Rules";
-            const bodyText = document.getElementById("bodyText").value || 
-            "**1️⃣ Respect Everyone** – Treat others with kindness. No harassment, discrimination, or toxicity.\n" +
-            "**2️⃣ No Spamming or Self-Promotion** – Keep chats clean. Advertise only in designated channels.\n" +
-            "**3️⃣ Use Appropriate Channels** – Follow the category structure for discussions and promotions.\n" +
-            "**4️⃣ Keep Content Safe** – No NSFW, offensive, or harmful material.\n" +
-            "**5️⃣ Follow Discord’s Terms** – Adhere to Discord’s official guidelines and policies.";
-            const embedColor = document.getElementById("embedColor").value;
-            
+            if (!webhookURL) {
+                alert("Please enter a valid webhook URL!");
+                return;
+            }
+
             const embedMessage = {
                 "content": "@everyone",
                 "embeds": [{
-                    "title": title,
-                    "description": bodyText,
-                    "color": parseInt(embedColor, 16),
-                    "image": {"url": "https://maxyt5184.github.io/Last-Day-of-School-June-11/Copilot_20250611_185300.png"},
-                    "footer": {
-                        "text": "🔗 Visit: HGT Rainer Community",
-                        "icon_url": "https://HGT-Promotion.defendaminecraft.online/favicon.ico"
-                    }
+                    "title": "🎭 Role Selection",
+                    "description": "User selected **" + role + "** role!",
+                    "color": 3498DB,
+                    "footer": { "text": "🔗 HGT Rainer Community" }
                 }]
             };
 
@@ -83,9 +71,9 @@
                 body: JSON.stringify(embedMessage)
             }).then(response => {
                 if (response.ok) {
-                    alert("Webhook sent successfully!");
+                    alert(role + " role sent successfully!");
                 } else {
-                    alert("Failed to send webhook. Check your URL.");
+                    alert("Failed to send role. Check your webhook URL.");
                 }
             });
         }
