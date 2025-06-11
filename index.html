@@ -1,499 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🎉 Dream Party Countdown 🎉</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap');
-  body, html {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
-    background: linear-gradient(135deg, #74ebd5, #acb6e5);
-    color: #222;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  h1 {
-    font-size: 3rem;
-    background: #1e66f5;
-    color: white;
-    padding: 10px 25px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 5px #1148c4;
-  }
-  #countdown {
-    font-size: 2.5rem;
-    background: #1e66f5;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 8px;
-    min-width: 280px;
-    text-align: center;
-    box-shadow: 0 0 20px #0056b3aa;
-    user-select: none;
-  }
-  #chatBox {
-    width: 350px;
-    height: 220px;
-    background: #f9f9ffdd;
-    border-radius: 12px;
-    margin-top: 30px;
-    overflow-y: auto;
-    box-shadow: 0 0 15px #1e66f588;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-  }
-  .chat-message {
-    display: flex;
-    margin-bottom: 12px;
-    align-items: flex-start;
-  }
-  .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: #ddd;
-    margin-right: 10px;
-    flex-shrink: 0;
-    border: 2px solid #1e66f5;
-  }
-  .message-content {
-    background: #1e66f5;
-    color: white;
-    border-radius: 12px;
-    padding: 10px 15px;
-    max-width: 75%;
-    font-size: 0.9rem;
-    position: relative;
-  }
-  .username {
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .emoji-reaction {
-    margin-left: 8px;
-    cursor: pointer;
-    user-select: none;
-    font-size: 1.2rem;
-  }
-  #playMusic {
-    margin-top: 25px;
-    background-color: #1e66f5;
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.2rem;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 0 15px #0056b3aa;
-    transition: background-color 0.3s ease;
-    user-select: none;
-  }
-  #playMusic:hover {
-    background-color: #0047a3;
-  }
-  #thankYouMessage {
-    font-size: 2.5rem;
-    color: #1e66f5;
-    margin-top: 30px;
-    display: none;
-    text-shadow: 0 0 10px #1e66f5aa;
-  }
-  #fireworksCanvas {
-    position: fixed;
-    top:0; left:0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 9999;
-    display: none;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HGT Rainer Webhook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1a1a2e;
+            color: white;
+        }
+        #webhookForm {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #16213e;
+            border-radius: 10px;
+            width: 400px;
+        }
+        input, select {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #0f3460;
+            color: white;
+            padding: 10px;
+            width: 100px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <h1>HGT Rainer Webhook System</h1>
+    <form id="webhookForm">
+        <input type="text" id="webhookURL" placeholder="Enter Webhook URL">
+        <input type="text" id="title" placeholder="Embed Title">
+        <input type="text" id="bodyText" placeholder="Embed Body Text">
+        <input type="text" id="websiteLink" placeholder="Website Link">
+        <input type="text" id="imageURL" placeholder="Banner Image URL">
+        <select id="embedColor">
+            <option value="34495E">Navy Blue</option>
+            <option value="FFFFFF">White</option>
+            <option value="3498DB">Blue</option>
+            <option value="87CEEB">Light Blue</option>
+        </select>
+        <button type="button" onclick="sendWebhook()">Send</button>
+    </form>
 
-  <h1>🎉 Countdown to the Dream Party 🎉</h1>
-  <div id="countdown">Loading...</div>
+    <script>
+        function sendWebhook() {
+            const webhookURL = document.getElementById("webhookURL").value;
+            const title = document.getElementById("title").value;
+            const bodyText = document.getElementById("bodyText").value;
+            const websiteLink = document.getElementById("websiteLink").value;
+            const imageURL = document.getElementById("imageURL").value;
+            const embedColor = document.getElementById("embedColor").value;
 
-  <button id="playMusic">▶️ Play Music</button>
+            const embedMessage = {
+                "content": "@everyone",
+                "embeds": [{
+                    "title": title,
+                    "description": bodyText + "\\n[Visit here](" + websiteLink + ")",
+                    "color": parseInt(embedColor, 16),
+                    "image": {"url": imageURL}
+                }]
+            };
 
-  <div id="chatBox"></div>
-
-  <div id="thankYouMessage">🙏 Thank you for coming! 🙏</div>
-
-  <canvas id="fireworksCanvas"></canvas>
-
-  <audio id="partyMusic" src="max.mp3" loop></audio>
-
-<script>
-  // Countdown Setup
-  const countdownEl = document.getElementById('countdown');
-  const thankYouEl = document.getElementById('thankYouMessage');
-  const music = document.getElementById('partyMusic');
-  const playMusicBtn = document.getElementById('playMusic');
-  const fireworksCanvas = document.getElementById('fireworksCanvas');
-  const ctx = fireworksCanvas.getContext('2d');
-
-  // Set party start and end times
-  const partyStart = new Date("June 11, 2025 00:00:00").getTime();
-  const partyEnd = new Date("June 11, 2025 09:05:00").getTime();
-
-  // Resize fireworks canvas
-  function resizeCanvas() {
-    fireworksCanvas.width = window.innerWidth;
-    fireworksCanvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  // Countdown update
-  function updateCountdown() {
-    const now = Date.now();
-
-    if (now >= partyEnd) {
-      countdownEl.style.display = 'none';
-      thankYouEl.style.display = 'block';
-      stopFireworks();
-      music.pause();
-      return;
-    }
-
-    if (now >= partyStart) {
-      // During party: show celebration
-      countdownEl.textContent = "🎉 It's Party Time! 🎉";
-      if (!fireworksRunning) startFireworks();
-      return;
-    }
-
-    // Before party: countdown time to partyStart
-    const diff = partyStart - now;
-
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const seconds = Math.floor((diff % (1000*60)) / 1000);
-
-    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  }
-
-  let countdownInterval = setInterval(updateCountdown, 1000);
-  updateCountdown();
-
-  // Play/Pause Music logic
-  playMusicBtn.addEventListener('click', () => {
-    if (music.paused) {
-      music.play().catch(e => console.log('Playback prevented:', e));
-      playMusicBtn.textContent = "⏸ Pause Music";
-    } else {
-      music.pause();
-      playMusicBtn.textContent = "▶️ Play Music";
-    }
-  });
-
-  // Fireworks animation adapted from simple JS fireworks demo
-  let fireworksRunning = false;
-  let fireworksParticles = [];
-  let fireworksTimer;
-  const maxFireworksDuration = 10 * 60 * 60 * 1000; // 10 hours in ms
-
-  class Particle {
-    constructor(x, y, color) {
-      this.x = x;
-      this.y = y;
-      this.color = color;
-      this.radius = Math.random() * 3 + 2;
-      this.speed = Math.random() * 5 + 2;
-      this.angle = Math.random() * 2 * Math.PI;
-      this.vx = Math.cos(this.angle) * this.speed;
-      this.vy = Math.sin(this.angle) * this.speed;
-      this.life = 100;
-      this.gravity = 0.05;
-    }
-    update() {
-      this.vx *= 0.95;
-      this.vy += this.gravity;
-      this.x += this.vx;
-      this.y += this.vy;
-      this.life--;
-      this.radius *= 0.96;
-    }
-    draw(ctx) {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-      ctx.fillStyle = this.color;
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = 10;
-      ctx.fill();
-    }
-  }
-
-  function randomColor() {
-    const colors = ['#ff3f3f', '#3fff8f', '#3f87ff', '#ffde3f', '#ff3fff'];
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
-  function createFirework() {
-    const x = Math.random() * fireworksCanvas.width;
-    const y = Math.random() * fireworksCanvas.height * 0.6;
-    const color = randomColor();
-    for (let i = 0; i < 50; i++) {
-      fireworksParticles.push(new Particle(x, y, color));
-    }
-  }
-
-  function drawFireworks() {
-    ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
-    for (let i = fireworksParticles.length -1; i >= 0; i--) {
-      const p = fireworksParticles[i];
-      p.update();
-      p.draw(ctx);
-      if (p.life <= 0 || p.radius < 0.5) {
-        fireworksParticles.splice(i, 1);
-      }
-    }
-  }
-
-  function fireworksLoop() {
-    if (!fireworksRunning) return;
-    drawFireworks();
-    if (Math.random() < 0.05) createFirework();
-    requestAnimationFrame(fireworksLoop);
-  }
-
-  function startFireworks() {
-    fireworksRunning = true;
-    fireworksCanvas.style.display = 'block';
-    fireworksLoop();
-    // Auto-stop after 10 hours
-    fireworksTimer = setTimeout(stopFireworks, maxFireworksDuration);
-  }
-
-  function stopFireworks() {
-    fireworksRunning = false;
-    fireworksCanvas.style.display = 'none';
-    fireworksParticles = [];
-    clearTimeout(fireworksTimer);
-  }
-
-  // Fake fan chat box
-  const chatBox = document.getElementById('chatBox');
-  const fans = [
-    {name: "Alice", avatar: "https://i.pravatar.cc/40?img=1"},
-    {name: "Bob", avatar: "https://i.pravatar.cc/40?img=2"},
-    {name: "Charlie", avatar: "https://i.pravatar.cc/40?img=3"},
-    {name: "Diana", avatar: "https://i.pravatar.cc/40?img=4"},
-    {name: "Ethan", avatar: "https://i.pravatar.cc/40?img=5"},
-  ];
-
-  const fanMessages = [
-    "This party is amazing! 🎉",
-    "Loving the vibes! 😍",
-    "Can't wait for the fireworks! 🎆",
-    "Best countdown ever! ⏳",
-    "Who's ready to dance? 💃🕺",
-    "Max, you're the best! 🙌",
-    "🎶 Music is fire! 🔥",
-  ];
-
-  const fanEmojis = ['❤️', '🔥', '🎉', '😂', '😍', '🙌'];
-
-  function addChatMessage(fan, message) {
-    const msgDiv = document.createElement('div');
-    msgDiv.classList.add('chat-message');
-
-    const avatar = document.createElement('img');
-    avatar.classList.add('avatar');
-    avatar.src = fan.avatar;
-    avatar.alt = fan.name;
-
-    const content = document.createElement('div');
-    content.classList.add('message-content');
-
-    const username = document.createElement('div');
-    username.classList.add('username');
-    username.textContent = fan.name;
-
-    const msgText = document.createElement('span');
-    msgText.textContent = message;
-
-    content.appendChild(username);
-    content.appendChild(msgText);
-
-    // Add emoji reaction buttons
-    fanEmojis.forEach(emoji => {
-      const emojiBtn = document.createElement('span');
-      emojiBtn.classList.add('emoji-reaction');
-      emojiBtn.textContent = emoji;
-      emojiBtn.title = `React with ${emoji}`;
-      emojiBtn.addEventListener('click', () => {
-        alert(`${fan.name}'s message got a reaction: ${emoji}`);
-      });
-      content.appendChild(emojiBtn);
-    });
-
-    msgDiv.appendChild(avatar);
-    msgDiv.appendChild(content);
-
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // Simulate fan chat messages every few seconds
-  function simulateFanChat() {
-    const fan = fans[Math.floor(Math.random() * fans.length)];
-    const msg = fanMessages[Math.floor(Math.random() * fanMessages.length)];
-    addChatMessage(fan, msg);
-  }
-
-  setInterval(simulateFanChat, 3500);
-  // Add initial messages fast
-  for (let i=0; i<5; i++) simulateFanChat();
-
-  // Automatic crazy mode scheduler at 9:04 AM June 11, 2025
-  function scheduleCrazyMode() {
-    const now = new Date();
-    const crazyTime = new Date("June 11, 2025 09:04:00").getTime();
-    const diff = crazyTime - now.getTime();
-
-    if (diff <= 0) {
-      openCrazyModeWindows();
-      return;
-    }
-
-    setTimeout(() => {
-      openCrazyModeWindows();
-    }, diff);
-  }
-
-  // Open 20 windows with countdown and autoplay music (crazy mode)
-  function openCrazyModeWindows() {
-    for (let i=0; i<20; i++) {
-      const win = window.open('', '_blank', 'width=400,height=300');
-      if (win) {
-        win.document.write(`
-          <!DOCTYPE html>
-          <html lang="en">
-          <head><meta charset="UTF-8" />
-          <title>Crazy Mode Party</title>
-          <style>
-            body {
-              margin: 0;
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-              background: linear-gradient(135deg, #74ebd5, #acb6e5);
-              color: #222;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              height: 100vh;
-              text-align: center;
-            }
-            h1 {
-              font-size: 2rem;
-              background-color: #1e66f5;
-              color: white;
-              padding: 10px 20px;
-              border-radius: 6px;
-              margin-bottom: 20px;
-            }
-            #countdown {
-              font-size: 1.5rem;
-              background-color: #1e66f5;
-              color: white;
-              padding: 10px 15px;
-              border-radius: 6px;
-              min-width: 180px;
-            }
-          </style>
-          </head>
-          <body>
-            <h1>🎉 Countdown to June 11 🎉</h1>
-            <div id="countdown">Loading...</div>
-            <audio autoplay loop src="max.mp3"></audio>
-            <script>
-              const countdownEl = document.getElementById('countdown');
-              const targetDate = new Date('June 11, 2025 00:00:00').getTime();
-
-              function updateCountdown() {
-                const now = Date.now();
-                const diff = targetDate - now;
-
-                if (diff <= 0) {
-                  countdownEl.textContent = "🎉 It's Party Time! 🎉";
-                  clearInterval(interval);
-                  return;
+            fetch(webhookURL, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(embedMessage)
+            }).then(response => {
+                if (response.ok) {
+                    alert("Webhook sent successfully!");
+                } else {
+                    alert("Failed to send webhook. Check your URL.");
                 }
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                countdownEl.textContent = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
-              }
-              updateCountdown();
-              const interval = setInterval(updateCountdown, 1000);
-            <\/script>
-          </body>
-          </html>
-        `);
-        win.document.close();
-      }
-    }
-  }
-
-  scheduleCrazyMode();
-
-</script>
-
-<!-- Confetti lib from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script>
-  // Launch confetti at party start (once)
-  let confettiLaunched = false;
-  function launchConfetti() {
-    if (confettiLaunched) return;
-    confettiLaunched = true;
-    const duration = 5000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
-
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    (function frame() {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) return;
-
-      const particleCount = 50 * (timeLeft / duration);
-
-      // since particles fall down, start them a bit higher
-      confetti(Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: Math.random(), y: Math.random() - 0.2 }
-      }));
-
-      requestAnimationFrame(frame);
-    })();
-  }
-
-  // Monitor countdown and trigger confetti + fireworks
-  setInterval(() => {
-    const now = Date.now();
-    if (now >= partyStart && !confettiLaunched) {
-      launchConfetti();
-    }
-  }, 1000);
-</script>
-
+            });
+        }
+    </script>
 </body>
 </html>
